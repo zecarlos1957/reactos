@@ -629,6 +629,13 @@ IShellFolder_CompareIDs(
  *
  * Used in SHDialogBox below
  */
+
+typedef struct tagSHDIALOG
+{
+    SHDIALOGPROC fn;
+    PVOID pThis;
+} SHDIALOG, *PSHDIALOG;
+
 static INT_PTR CALLBACK
 SHDialogProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {

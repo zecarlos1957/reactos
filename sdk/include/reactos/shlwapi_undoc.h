@@ -138,11 +138,6 @@ MayExecForward(
     _In_ VARIANT *pvaIn,
     _Inout_ VARIANT *pvaOut);
 
-PSTR WINAPI CharLowerNoDBCSA(_Inout_ PSTR lpString);
-PWSTR WINAPI CharLowerNoDBCSW(_Inout_ PWSTR lpString);
-PSTR WINAPI CharUpperNoDBCSA(_Inout_ PSTR lpString);
-PWSTR WINAPI CharUpperNoDBCSW(_Inout_ PWSTR lpString);
-
 HRESULT WINAPI IsQSForward(_In_opt_ REFGUID pguidCmdGroup, _In_ ULONG cCmds, _In_ OLECMD *prgCmds);
 BOOL WINAPI SHIsChildOrSelf(HWND hParent, HWND hChild);
 HRESULT WINAPI SHForwardContextMenuMsg(IUnknown* pUnk, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT* pResult, BOOL useIContextMenu2);
@@ -472,12 +467,6 @@ typedef INT_PTR (CALLBACK *SHDIALOGPROC)(
     WPARAM wParam,
     LPARAM lParam);
 
-typedef struct tagSHDIALOG
-{
-    SHDIALOGPROC fn;
-    PVOID pThis;
-} SHDIALOG, *PSHDIALOG, *LPSHDIALOG;
-
 INT_PTR WINAPI
 SHDialogBox(
     _In_opt_ HINSTANCE hInstance,
@@ -485,6 +474,11 @@ SHDialogBox(
     _In_opt_ HWND hWndParent,
     _In_opt_ SHDIALOGPROC fn,
     _In_opt_ PVOID pThis);
+
+PSTR WINAPI CharLowerNoDBCSA(_Inout_ PSTR lpString);
+PWSTR WINAPI CharLowerNoDBCSW(_Inout_ PWSTR lpString);
+PSTR WINAPI CharUpperNoDBCSA(_Inout_ PSTR lpString);
+PWSTR WINAPI CharUpperNoDBCSW(_Inout_ PWSTR lpString);
 
 /*****************************************************************************
  * IAssociationElementOld interface
