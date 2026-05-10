@@ -89,7 +89,42 @@ INetCfgComponentBindings_fnSupportsBindingInterface(
     DWORD dwFlags,
     LPCWSTR pszwInterfaceName)
 {
-    return E_NOTIMPL;
+    INetCfgComponentImpl *pComponent;
+    PWSTR pszRange, pszStart, pszEnd;
+
+    pComponent = impl_from_INetCfgComponentBindings(iface);
+
+    if (!((dwFlags & NCF_UPPER) || (dwFlags & NCF_LOWER)))
+        return E_INVALIDARG;
+
+    if (!pszwInterfaceName)
+        return E_POINTER;
+
+    pszRange = (dwFlags & NCF_UPPER) ? pComponent->pItem->pszUpperRange : pComponent->pItem->pszLowerRange;
+    TRACE("Range: %S\n", pszRange);
+
+    pszStart = pszRange;
+    for (;;)
+    {
+        pszEnd = wcschr(pszStart, L',');
+        if (pszEnd == NULL)
+        {
+            TRACE("%S -- %S\n", pszStart, pszwInterfaceName);
+            return (wcsicmp(pszStart, pszwInterfaceName)) ? S_FALSE : S_OK;
+        }
+        else
+        {
+            *pszEnd = UNICODE_NULL;
+            TRACE("%S -- %S\n", pszStart, pszwInterfaceName);
+            if (wcsicmp(pszStart, pszwInterfaceName) == 0)
+                return S_OK;
+
+            *pszEnd = L',';
+            pszStart = pszEnd + 1;
+        }
+    }
+
+    return S_FALSE;
 }
 
 HRESULT
