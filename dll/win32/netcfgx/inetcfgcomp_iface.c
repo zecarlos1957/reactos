@@ -583,6 +583,9 @@ CreateNotifyObject(
     INetCfgComponentControl *pControl;
     INetCfgComponentPropertyUi *pPropertyUi;
     INetCfgComponentSetup *pSetup;
+    INetCfgComponentNotifyBinding *pNotifyBinding;
+    INetCfgComponentNotifyGlobal *pNotifyGlobal;
+    INetCfgComponentUpperEdge *pUpperEdge;
     HRESULT hr;
     LONG lRet;
     CLSID ClassGUID;
@@ -652,7 +655,31 @@ CreateNotifyObject(
         This->pItem->pSetup = pSetup;
     }
 
+    hr = INetCfgComponentControl_QueryInterface(pControl, &IID_INetCfgComponentNotifyBinding, (LPVOID*)&pNotifyBinding);
+    if (SUCCEEDED(hr))
+    {
+        This->pItem->pNotifyBinding = pNotifyBinding;
+    }
+
+    hr = INetCfgComponentControl_QueryInterface(pControl, &IID_INetCfgComponentNotifyGlobal, (LPVOID*)&pNotifyGlobal);
+    if (SUCCEEDED(hr))
+    {
+        This->pItem->pNotifyGlobal = pNotifyGlobal;
+    }
+
+    hr = INetCfgComponentControl_QueryInterface(pControl, &IID_INetCfgComponentUpperEdge, (LPVOID*)&pUpperEdge);
+    if (SUCCEEDED(hr))
+    {
+        This->pItem->pUpperEdge = pUpperEdge;
+    }
+
     INetCfgComponentControl_Initialize(pControl, iface, This->pNCfg, FALSE);
+
+    if (This->pItem->pNotifyGlobal)
+    {
+        INetCfgComponentNotifyGlobal_GetSupportedNotifications(This->pItem->pNotifyGlobal,
+                                                               &This->pItem->dwSupportedNotifications);
+    }
 
     return S_OK;
 }
