@@ -110,13 +110,13 @@ INetCfgComponentBindings_fnSupportsBindingInterface(
         if (pszEnd == NULL)
         {
             TRACE("%S -- %S\n", pszStart, pszwInterfaceName);
-            return (wcsicmp(pszStart, pszwInterfaceName)) ? S_FALSE : S_OK;
+            return (_wcsicmp(pszStart, pszwInterfaceName)) ? S_FALSE : S_OK;
         }
         else
         {
             *pszEnd = UNICODE_NULL;
             TRACE("%S -- %S\n", pszStart, pszwInterfaceName);
-            if (wcsicmp(pszStart, pszwInterfaceName) == 0)
+            if (_wcsicmp(pszStart, pszwInterfaceName) == 0)
                 return S_OK;
 
             *pszEnd = L',';
